@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 st.set_page_config(
     page_title="Marketing Intelligence Brief",
@@ -6,13 +7,13 @@ st.set_page_config(
     layout="wide"
 )
 
+WEBHOOK_URL = "https://xinchenzu.app.n8n.cloud/webhook/marketing-brief"
+
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-* {
-    font-family: 'Inter', sans-serif;
-}
+* { font-family: 'Inter', sans-serif; }
 
 .stApp {
     background:
@@ -29,8 +30,7 @@ st.markdown("""
 }
 
 section[data-testid="stSidebar"] {
-    background:
-        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,244,252,0.95));
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,244,252,0.95));
     border-right: 1px solid rgba(236, 72, 153, 0.16);
 }
 
@@ -43,7 +43,6 @@ section[data-testid="stSidebar"] {
     border-radius: 999px;
     background: rgba(255,255,255,0.78);
     backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.9);
     box-shadow: 0 18px 45px rgba(17,24,39,0.06);
 }
 
@@ -67,12 +66,11 @@ section[data-testid="stSidebar"] {
 .hero {
     position: relative;
     overflow: hidden;
-    min-height: 430px;
+    min-height: 420px;
     padding: 3.7rem 3.5rem;
     border-radius: 38px;
     color: white;
-    background:
-        linear-gradient(135deg, #ff4ecd 0%, #7c3aed 44%, #00c2ff 100%);
+    background: linear-gradient(135deg, #ff4ecd 0%, #7c3aed 44%, #00c2ff 100%);
     box-shadow: 0 34px 80px rgba(124,58,237,0.30);
     animation: heroIn 0.9s ease-out;
 }
@@ -86,7 +84,6 @@ section[data-testid="stSidebar"] {
     top: -110px;
     border-radius: 50%;
     background: rgba(255,255,255,0.25);
-    filter: blur(1px);
 }
 
 .hero:after {
@@ -102,11 +99,11 @@ section[data-testid="stSidebar"] {
 
 .hero h1 {
     position: relative;
-    font-size: 5.3rem;
+    font-size: 5rem;
     line-height: 0.95;
     letter-spacing: -0.08em;
     font-weight: 950;
-    max-width: 850px;
+    max-width: 900px;
     margin-bottom: 1.3rem;
 }
 
@@ -129,7 +126,6 @@ section[data-testid="stSidebar"] {
     border: 1px solid rgba(255,255,255,0.42);
     color: white;
     font-weight: 850;
-    backdrop-filter: blur(12px);
 }
 
 .glow-card {
@@ -137,16 +133,13 @@ section[data-testid="stSidebar"] {
     border-radius: 28px;
     background: rgba(255,255,255,0.78);
     backdrop-filter: blur(18px);
-    border: 1px solid rgba(255,255,255,0.95);
     box-shadow: 0 22px 48px rgba(17,24,39,0.08);
-    animation: rise 0.8s ease-out;
 }
 
 .stat-card {
     padding: 1.25rem 1.35rem;
     border-radius: 26px;
-    background: rgba(255,255,255,0.8);
-    border: 1px solid rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.82);
     box-shadow: 0 18px 42px rgba(124,58,237,0.10);
 }
 
@@ -155,13 +148,11 @@ section[data-testid="stSidebar"] {
     font-size: 0.82rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
 }
 
 .stat-value {
     font-size: 2.1rem;
     font-weight: 950;
-    letter-spacing: -0.05em;
     background: linear-gradient(90deg, #ec4899, #7c3aed, #06b6d4);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -171,7 +162,6 @@ section[data-testid="stSidebar"] {
     padding: 1.15rem 1.2rem;
     border-radius: 24px;
     background: linear-gradient(135deg, #ffffff, #fff7fd);
-    border: 1px solid rgba(236,72,153,0.16);
     box-shadow: 0 14px 34px rgba(236,72,153,0.08);
     min-height: 128px;
 }
@@ -193,24 +183,8 @@ section[data-testid="stSidebar"] {
     padding: 1.15rem 1.25rem;
     border-radius: 24px;
     background: rgba(255,255,255,0.86);
-    border: 1px solid rgba(124,58,237,0.14);
     box-shadow: 0 14px 36px rgba(124,58,237,0.08);
     margin-bottom: 0.9rem;
-}
-
-.output-card {
-    padding: 1.45rem 1.55rem;
-    border-radius: 26px;
-    background: white;
-    border: 1px solid rgba(124,58,237,0.16);
-    box-shadow: 0 18px 42px rgba(124,58,237,0.12);
-    margin-bottom: 1rem;
-    animation: rise 0.75s ease-out;
-}
-
-.output-card h3 {
-    color: #7c3aed;
-    margin-bottom: 0.45rem;
 }
 
 .footer {
@@ -219,7 +193,6 @@ section[data-testid="stSidebar"] {
     border-radius: 28px;
     text-align: center;
     background: rgba(255,255,255,0.68);
-    border: 1px solid rgba(255,255,255,0.95);
     color: #6b7280;
 }
 
@@ -239,19 +212,9 @@ div.stButton > button:hover {
     box-shadow: 0 24px 52px rgba(124,58,237,0.36);
 }
 
-[data-testid="stTextInput"] input,
-[data-testid="stSelectbox"] div {
-    border-radius: 16px !important;
-}
-
 @keyframes heroIn {
     from {opacity: 0; transform: translateY(18px) scale(0.985);}
     to {opacity: 1; transform: translateY(0) scale(1);}
-}
-
-@keyframes rise {
-    from {opacity: 0; transform: translateY(18px);}
-    to {opacity: 1; transform: translateY(0);}
 }
 </style>
 """, unsafe_allow_html=True)
@@ -264,17 +227,17 @@ with st.sidebar:
     st.write("① Enter a topic")
     st.write("② Select a trusted source")
     st.write("③ Choose priority")
-    st.write("④ Generate a brief")
+    st.write("④ Generate a live brief")
     st.divider()
-    st.success("Built for technology consultants who need clear marketing intelligence without reading every article manually.")
+    st.success("Connected to n8n Webhook + Gemini workflow.")
 
 st.markdown("""
 <div class="nav">
     <div class="logo">✨ Marketing Intelligence Brief</div>
     <div>
         <span class="nav-pill">Consulting</span>
-        <span class="nav-pill">Marketing Trends</span>
-        <span class="nav-pill">Readable Output</span>
+        <span class="nav-pill">n8n Workflow</span>
+        <span class="nav-pill">Gemini Analysis</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -287,7 +250,7 @@ st.markdown("""
     understand why they matter, and turn them into practical recommendations.
     </p>
     <span class="badge">🌈 Dopamine Design</span>
-    <span class="badge">⚡ Fast Briefs</span>
+    <span class="badge">⚡ Live n8n Call</span>
     <span class="badge">🎯 Consultant-Ready</span>
     <span class="badge">💬 Plain English</span>
 </div>
@@ -302,11 +265,10 @@ with s1:
 with s2:
     st.markdown('<div class="stat-card"><div class="stat-label">Audience</div><div class="stat-value">B2B</div></div>', unsafe_allow_html=True)
 with s3:
-    st.markdown('<div class="stat-card"><div class="stat-label">Format</div><div class="stat-value">Clear</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="stat-card"><div class="stat-label">Engine</div><div class="stat-value">n8n</div></div>', unsafe_allow_html=True)
 with s4:
     st.markdown('<div class="stat-card"><div class="stat-label">Use Case</div><div class="stat-value">Strategy</div></div>', unsafe_allow_html=True)
 
-st.write("")
 st.write("")
 
 st.markdown("## How it works")
@@ -314,11 +276,10 @@ w1, w2, w3 = st.columns(3)
 with w1:
     st.markdown('<div class="step-card"><div class="step-number">1</div><h4>Choose a topic</h4><p>Start with a marketing trend, article title, or client question.</p></div>', unsafe_allow_html=True)
 with w2:
-    st.markdown('<div class="step-card"><div class="step-number">2</div><h4>Add context</h4><p>Select the source and priority level so the brief has useful context.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="step-card"><div class="step-number">2</div><h4>Send to n8n</h4><p>The interface sends your request to the workflow through a webhook.</p></div>', unsafe_allow_html=True)
 with w3:
-    st.markdown('<div class="step-card"><div class="step-number">3</div><h4>Generate insight</h4><p>Receive a structured brief a consultant can read and act on.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="step-card"><div class="step-number">3</div><h4>Get a brief</h4><p>Gemini returns a consultant-ready marketing intelligence brief.</p></div>', unsafe_allow_html=True)
 
-st.write("")
 st.write("")
 
 left, right = st.columns([1.05, 0.95], gap="large")
@@ -349,7 +310,7 @@ with left:
         ["High", "Medium", "Low"]
     )
 
-    generate = st.button("✨ Generate Marketing Intelligence Brief")
+    generate = st.button("✨ Generate Live Marketing Intelligence Brief")
     st.markdown('</div>', unsafe_allow_html=True)
 
 with right:
@@ -368,56 +329,44 @@ st.write("")
 if generate:
     if topic.strip() == "":
         st.error("Please enter a marketing topic or article title before generating the brief.")
-
-    elif source == "Other / Unknown":
-        st.warning(
-            "The source is unknown. Please verify the original article before using this brief for client recommendations."
-        )
-
     else:
-        st.success("✨ Marketing intelligence brief generated successfully.")
+        payload = {
+            "topic": topic,
+            "source": source,
+            "priority": priority
+        }
 
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Source", source)
-        c2.metric("Priority", priority)
-        c3.metric("Status", "Ready")
+        with st.spinner("Generating live marketing intelligence through n8n..."):
+            try:
+                response = requests.post(WEBHOOK_URL, json=payload, timeout=60)
 
-        st.markdown(f"""
-        <div class="output-card">
-            <h3>1. Selected Topic</h3>
-            <p>{topic}</p>
-        </div>
-        """, unsafe_allow_html=True)
+                if response.status_code == 200 and response.text.strip():
+                    st.success("✨ Live marketing intelligence brief generated successfully.")
+                    st.markdown(response.text)
+                else:
+                    st.warning("The live analysis service did not return a complete response. Showing a safe draft brief instead.")
+                    st.markdown(f"""
+### Selected Topic
+{topic}
 
-        st.markdown(f"""
-        <div class="output-card">
-            <h3>2. Trend Summary</h3>
-            <p><b>{topic}</b> may be relevant to current marketing strategy. 
-            The source, <b>{source}</b>, should be reviewed to confirm the original context before using the insight.</p>
-        </div>
-        """, unsafe_allow_html=True)
+### Trend Summary
+This topic may be relevant to current marketing strategy. The selected source, {source}, should be reviewed to confirm the original context before using the insight.
 
-        st.markdown("""
-        <div class="output-card">
-            <h3>3. Why It Matters</h3>
-            <p>For technology consultants, this information can help connect marketing trends to client needs, 
-            especially when clients are trying to improve digital visibility, content planning, or customer engagement.</p>
-        </div>
-        """, unsafe_allow_html=True)
+### Why It Matters
+For technology consultants, this information can help connect marketing trends to client needs, especially when clients are trying to improve digital visibility, content planning, or customer engagement.
 
-        st.markdown("""
-        <div class="output-card">
-            <h3>4. Consultant Recommendation</h3>
-            <p>Use this insight as a starting point for client discussion. Review the original article, identify whether 
-            the trend applies to the client’s industry, and decide whether it should influence marketing or technology strategy.</p>
-        </div>
-        """, unsafe_allow_html=True)
+### Consultant Recommendation
+Use this insight as a starting point for client discussion. Review the original article, identify whether the trend applies to the client’s industry, and decide whether it should influence marketing or technology strategy.
+""")
+
+            except requests.exceptions.RequestException:
+                st.error("The live analysis service is temporarily unavailable. Please try again later.")
 
 else:
     st.info("Enter a topic, select a source, and click the button to generate a human-readable marketing intelligence brief.")
 
 st.markdown("""
 <div class="footer">
-    Built as a Streamlit interface for Assignment 5A — designed to make marketing intelligence usable for real people.
+    Built as a Streamlit interface for Assignment 5A — connected to an n8n webhook workflow for live marketing intelligence.
 </div>
 """, unsafe_allow_html=True)
