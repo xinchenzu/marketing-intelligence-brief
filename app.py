@@ -8,157 +8,249 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-html, body, [class*="css"] {
+* {
     font-family: 'Inter', sans-serif;
 }
 
 .stApp {
     background:
-        radial-gradient(circle at top left, rgba(255, 105, 180, 0.28), transparent 30%),
-        radial-gradient(circle at top right, rgba(0, 229, 255, 0.25), transparent 28%),
-        radial-gradient(circle at bottom left, rgba(255, 214, 10, 0.25), transparent 30%),
-        linear-gradient(135deg, #fff7fb 0%, #f5fbff 45%, #fffdf2 100%);
-}
-
-section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #ffffff 0%, #fff3fb 100%);
-    border-right: 1px solid rgba(255, 105, 180, 0.18);
+        radial-gradient(circle at 8% 12%, rgba(255, 77, 210, 0.28), transparent 28%),
+        radial-gradient(circle at 92% 10%, rgba(0, 209, 255, 0.28), transparent 30%),
+        radial-gradient(circle at 50% 95%, rgba(255, 221, 51, 0.26), transparent 35%),
+        linear-gradient(135deg, #fff8fc 0%, #f2fbff 46%, #fffdf1 100%);
 }
 
 .main .block-container {
-    padding-top: 2rem;
-    max-width: 1180px;
+    max-width: 1240px;
+    padding-top: 1.3rem;
+    padding-bottom: 4rem;
+}
+
+section[data-testid="stSidebar"] {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,244,252,0.95));
+    border-right: 1px solid rgba(236, 72, 153, 0.16);
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.1rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.9);
+    box-shadow: 0 18px 45px rgba(17,24,39,0.06);
+}
+
+.logo {
+    font-weight: 900;
+    font-size: 1.05rem;
+    color: #111827;
+}
+
+.nav-pill {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: #f5f3ff;
+    color: #6d28d9;
+    font-weight: 750;
+    font-size: 0.82rem;
 }
 
 .hero {
     position: relative;
-    padding: 3rem;
-    border-radius: 34px;
     overflow: hidden;
-    background:
-        linear-gradient(135deg, rgba(255, 94, 174, 0.95), rgba(124, 77, 255, 0.95) 45%, rgba(0, 216, 255, 0.95));
+    min-height: 430px;
+    padding: 3.7rem 3.5rem;
+    border-radius: 38px;
     color: white;
-    box-shadow: 0 28px 70px rgba(124, 77, 255, 0.28);
-    animation: floatIn 0.9s ease-out;
+    background:
+        linear-gradient(135deg, #ff4ecd 0%, #7c3aed 44%, #00c2ff 100%);
+    box-shadow: 0 34px 80px rgba(124,58,237,0.30);
+    animation: heroIn 0.9s ease-out;
 }
 
 .hero:before {
     content: "";
     position: absolute;
-    width: 260px;
-    height: 260px;
-    right: -60px;
-    top: -70px;
-    background: rgba(255,255,255,0.25);
+    width: 360px;
+    height: 360px;
+    right: -80px;
+    top: -110px;
     border-radius: 50%;
-    filter: blur(2px);
+    background: rgba(255,255,255,0.25);
+    filter: blur(1px);
 }
 
 .hero:after {
     content: "";
     position: absolute;
-    width: 180px;
-    height: 180px;
-    left: 55%;
-    bottom: -90px;
-    background: rgba(255, 255, 255, 0.22);
+    width: 230px;
+    height: 230px;
+    left: 58%;
+    bottom: -100px;
     border-radius: 50%;
+    background: rgba(255,255,255,0.18);
 }
 
 .hero h1 {
     position: relative;
-    font-size: 4.1rem;
-    line-height: 1;
-    margin-bottom: 1rem;
-    font-weight: 850;
-    letter-spacing: -0.06em;
+    font-size: 5.3rem;
+    line-height: 0.95;
+    letter-spacing: -0.08em;
+    font-weight: 950;
+    max-width: 850px;
+    margin-bottom: 1.3rem;
 }
 
 .hero p {
     position: relative;
-    font-size: 1.18rem;
-    color: rgba(255,255,255,0.92);
+    font-size: 1.25rem;
     max-width: 760px;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.65;
 }
 
 .badge {
     position: relative;
     display: inline-block;
-    padding: 0.5rem 0.9rem;
-    margin-right: 0.5rem;
-    margin-top: 1rem;
+    margin-top: 1.1rem;
+    margin-right: 0.55rem;
+    padding: 0.58rem 0.95rem;
     border-radius: 999px;
     background: rgba(255,255,255,0.22);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.42);
     color: white;
-    font-weight: 700;
-    border: 1px solid rgba(255,255,255,0.35);
+    font-weight: 850;
+    backdrop-filter: blur(12px);
 }
 
-.glass-card {
-    padding: 1.6rem;
+.glow-card {
+    padding: 1.5rem;
+    border-radius: 28px;
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.95);
+    box-shadow: 0 22px 48px rgba(17,24,39,0.08);
+    animation: rise 0.8s ease-out;
+}
+
+.stat-card {
+    padding: 1.25rem 1.35rem;
     border-radius: 26px;
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,0.75);
-    box-shadow: 0 18px 45px rgba(31, 41, 55, 0.10);
-    animation: rise 0.75s ease-out;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.95);
+    box-shadow: 0 18px 42px rgba(124,58,237,0.10);
+}
+
+.stat-label {
+    color: #6b7280;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.stat-value {
+    font-size: 2.1rem;
+    font-weight: 950;
+    letter-spacing: -0.05em;
+    background: linear-gradient(90deg, #ec4899, #7c3aed, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.step-card {
+    padding: 1.15rem 1.2rem;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #ffffff, #fff7fd);
+    border: 1px solid rgba(236,72,153,0.16);
+    box-shadow: 0 14px 34px rgba(236,72,153,0.08);
+    min-height: 128px;
+}
+
+.step-number {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff4ecd, #7c3aed);
+    margin-bottom: 0.6rem;
 }
 
 .feature-card {
-    padding: 1.2rem 1.3rem;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #ffffff, #fff5fd);
-    border: 1px solid rgba(255, 105, 180, 0.18);
-    box-shadow: 0 12px 30px rgba(255, 105, 180, 0.10);
+    padding: 1.15rem 1.25rem;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.86);
+    border: 1px solid rgba(124,58,237,0.14);
+    box-shadow: 0 14px 36px rgba(124,58,237,0.08);
     margin-bottom: 0.9rem;
 }
 
 .output-card {
-    padding: 1.4rem 1.5rem;
-    border-radius: 24px;
+    padding: 1.45rem 1.55rem;
+    border-radius: 26px;
     background: white;
-    border: 1px solid rgba(124, 77, 255, 0.18);
-    box-shadow: 0 16px 36px rgba(124, 77, 255, 0.12);
+    border: 1px solid rgba(124,58,237,0.16);
+    box-shadow: 0 18px 42px rgba(124,58,237,0.12);
     margin-bottom: 1rem;
-    animation: rise 0.7s ease-out;
+    animation: rise 0.75s ease-out;
 }
 
 .output-card h3 {
-    color: #6d28d9;
-    margin-bottom: 0.5rem;
+    color: #7c3aed;
+    margin-bottom: 0.45rem;
+}
+
+.footer {
+    margin-top: 2.5rem;
+    padding: 1.3rem;
+    border-radius: 28px;
+    text-align: center;
+    background: rgba(255,255,255,0.68);
+    border: 1px solid rgba(255,255,255,0.95);
+    color: #6b7280;
 }
 
 div.stButton > button {
     border-radius: 999px;
-    padding: 0.7rem 1.4rem;
+    padding: 0.85rem 1.55rem;
     border: none;
-    font-weight: 800;
+    font-weight: 900;
     color: white;
     background: linear-gradient(90deg, #ff4ecd, #7c3aed, #00c2ff);
-    box-shadow: 0 14px 30px rgba(124, 58, 237, 0.28);
+    box-shadow: 0 18px 38px rgba(124,58,237,0.28);
     transition: all 0.25s ease;
 }
 
 div.stButton > button:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 18px 40px rgba(124, 58, 237, 0.35);
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: 0 24px 52px rgba(124,58,237,0.36);
 }
 
-[data-testid="stMetricValue"] {
-    color: #7c3aed;
-    font-weight: 800;
+[data-testid="stTextInput"] input,
+[data-testid="stSelectbox"] div {
+    border-radius: 16px !important;
 }
 
-@keyframes floatIn {
-    from {opacity: 0; transform: translateY(18px) scale(0.98);}
+@keyframes heroIn {
+    from {opacity: 0; transform: translateY(18px) scale(0.985);}
     to {opacity: 1; transform: translateY(0) scale(1);}
 }
 
 @keyframes rise {
-    from {opacity: 0; transform: translateY(16px);}
+    from {opacity: 0; transform: translateY(18px);}
     to {opacity: 1; transform: translateY(0);}
 }
 </style>
@@ -166,40 +258,73 @@ div.stButton > button:hover {
 
 with st.sidebar:
     st.markdown("## ✨ Consultant Toolkit")
-    st.write("A fast, polished interface for turning marketing topics into client-ready insights.")
+    st.write("A polished interface for turning marketing topics into client-ready insights.")
     st.divider()
     st.markdown("### Workflow")
     st.write("① Enter a topic")
-    st.write("② Select a source")
+    st.write("② Select a trusted source")
     st.write("③ Choose priority")
     st.write("④ Generate a brief")
     st.divider()
-    st.info("Built for technology consultants who need clear marketing intelligence without reading every article manually.")
+    st.success("Built for technology consultants who need clear marketing intelligence without reading every article manually.")
+
+st.markdown("""
+<div class="nav">
+    <div class="logo">✨ Marketing Intelligence Brief</div>
+    <div>
+        <span class="nav-pill">Consulting</span>
+        <span class="nav-pill">Marketing Trends</span>
+        <span class="nav-pill">Readable Output</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("""
 <div class="hero">
-    <h1>Marketing Intelligence Brief ✨</h1>
-    <p>Turn marketing articles into bright, practical, client-ready insights for technology consultants.</p>
-    <span class="badge">🌈 Dopamine UI</span>
-    <span class="badge">📊 Consultant-Ready</span>
+    <h1>Turn marketing noise into client-ready insight.</h1>
+    <p>
+    A colorful intelligence workspace for technology consultants who need to scan marketing topics,
+    understand why they matter, and turn them into practical recommendations.
+    </p>
+    <span class="badge">🌈 Dopamine Design</span>
     <span class="badge">⚡ Fast Briefs</span>
+    <span class="badge">🎯 Consultant-Ready</span>
+    <span class="badge">💬 Plain English</span>
 </div>
 """, unsafe_allow_html=True)
 
 st.write("")
 st.write("")
 
-top1, top2, top3 = st.columns(3)
-top1.metric("Output Format", "Brief")
-top2.metric("Target User", "Consultants")
-top3.metric("Style", "Readable")
+s1, s2, s3, s4 = st.columns(4)
+with s1:
+    st.markdown('<div class="stat-card"><div class="stat-label">Output</div><div class="stat-value">Brief</div></div>', unsafe_allow_html=True)
+with s2:
+    st.markdown('<div class="stat-card"><div class="stat-label">Audience</div><div class="stat-value">B2B</div></div>', unsafe_allow_html=True)
+with s3:
+    st.markdown('<div class="stat-card"><div class="stat-label">Format</div><div class="stat-value">Clear</div></div>', unsafe_allow_html=True)
+with s4:
+    st.markdown('<div class="stat-card"><div class="stat-label">Use Case</div><div class="stat-value">Strategy</div></div>', unsafe_allow_html=True)
 
+st.write("")
+st.write("")
+
+st.markdown("## How it works")
+w1, w2, w3 = st.columns(3)
+with w1:
+    st.markdown('<div class="step-card"><div class="step-number">1</div><h4>Choose a topic</h4><p>Start with a marketing trend, article title, or client question.</p></div>', unsafe_allow_html=True)
+with w2:
+    st.markdown('<div class="step-card"><div class="step-number">2</div><h4>Add context</h4><p>Select the source and priority level so the brief has useful context.</p></div>', unsafe_allow_html=True)
+with w3:
+    st.markdown('<div class="step-card"><div class="step-number">3</div><h4>Generate insight</h4><p>Receive a structured brief a consultant can read and act on.</p></div>', unsafe_allow_html=True)
+
+st.write("")
 st.write("")
 
 left, right = st.columns([1.05, 0.95], gap="large")
 
 with left:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="glow-card">', unsafe_allow_html=True)
     st.markdown("## Create Your Brief")
 
     topic = st.text_input(
@@ -228,12 +353,13 @@ with left:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with right:
-    st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+    st.markdown('<div class="glow-card">', unsafe_allow_html=True)
     st.markdown("## What You Get")
     st.markdown("""
-    <div class="feature-card">💡 <b>Trend Summary</b><br>Simple explanation of the topic.</div>
-    <div class="feature-card">🎯 <b>Why It Matters</b><br>Connects the trend to client needs.</div>
-    <div class="feature-card">🚀 <b>Consultant Recommendation</b><br>Turns the topic into a next step.</div>
+    <div class="feature-card">💡 <b>Trend Summary</b><br>Simple explanation of the marketing topic.</div>
+    <div class="feature-card">🎯 <b>Why It Matters</b><br>Connects the trend to client needs and business context.</div>
+    <div class="feature-card">🚀 <b>Consultant Recommendation</b><br>Turns the topic into a practical next step.</div>
+    <div class="feature-card">🧭 <b>Source Context</b><br>Shows where the information came from before it is used.</div>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -289,3 +415,9 @@ if generate:
 
 else:
     st.info("Enter a topic, select a source, and click the button to generate a human-readable marketing intelligence brief.")
+
+st.markdown("""
+<div class="footer">
+    Built as a Streamlit interface for Assignment 5A — designed to make marketing intelligence usable for real people.
+</div>
+""", unsafe_allow_html=True)
