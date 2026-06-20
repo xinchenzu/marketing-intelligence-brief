@@ -143,16 +143,16 @@ with st.sidebar:
     st.write("① Enter a topic")
     st.write("② Select a trusted source")
     st.write("③ Choose priority")
-    st.write("④ Generate a live brief")
+    st.write("④ Generate a brief")
     st.divider()
-    st.success("Connected to n8n Webhook + Gemini workflow.")
+    st.success("Connected to n8n webhook workflow.")
 
 st.markdown("""
 <div class="hero">
     <h1>Turn marketing noise into client-ready insight.</h1>
     <p>A colorful intelligence workspace for technology consultants who need to scan marketing topics, understand why they matter, and turn them into practical recommendations.</p>
     <span class="badge">🌈 Dopamine Design</span>
-    <span class="badge">⚡ Live n8n Call</span>
+    <span class="badge">⚡ n8n Workflow</span>
     <span class="badge">🎯 Consultant-Ready</span>
     <span class="badge">💬 Plain English</span>
 </div>
@@ -179,9 +179,9 @@ w1, w2, w3 = st.columns(3)
 with w1:
     st.markdown('<div class="step-card"><div class="step-number">1</div><h4>Choose a topic</h4><p>Start with a marketing trend, article title, or client question.</p></div>', unsafe_allow_html=True)
 with w2:
-    st.markdown('<div class="step-card"><div class="step-number">2</div><h4>Send to n8n</h4><p>The interface sends your request to the workflow through a webhook.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="step-card"><div class="step-number">2</div><h4>Send to n8n</h4><p>The interface sends the request to the workflow through a webhook.</p></div>', unsafe_allow_html=True)
 with w3:
-    st.markdown('<div class="step-card"><div class="step-number">3</div><h4>Get a brief</h4><p>Gemini returns a consultant-ready marketing intelligence brief.</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="step-card"><div class="step-number">3</div><h4>Get a brief</h4><p>The workflow returns a readable marketing intelligence brief.</p></div>', unsafe_allow_html=True)
 
 st.write("")
 
@@ -193,7 +193,7 @@ with left:
 
     topic = st.text_input(
         "Marketing topic or article title",
-        placeholder="Example: AI search optimization, social media strategy, content marketing trends"
+        placeholder="Examples: AI Search Optimization, Content Marketing Trends, Social Media Strategy, B2B LinkedIn Marketing"
     )
 
     source = st.selectbox(
@@ -213,7 +213,11 @@ with left:
         ["High", "Medium", "Low"]
     )
 
-    generate = st.button("✨ Generate Live Marketing Intelligence Brief")
+    st.caption(
+        "Priority is included for future versions where different levels may influence analysis depth."
+    )
+
+    generate = st.button("✨ Generate Marketing Intelligence Brief")
     st.markdown('</div>', unsafe_allow_html=True)
 
 with right:
@@ -239,8 +243,6 @@ if generate:
             "priority": priority
         }
 
-        st.info("Sending request to n8n webhook...")
-
         try:
             response = requests.post(
                 WEBHOOK_URL,
@@ -248,19 +250,23 @@ if generate:
                 timeout=60
             )
 
-            st.write("Webhook status:", response.status_code)
-
             if response.status_code == 200 and response.text.strip():
-                st.success("✨ Live marketing intelligence brief generated successfully.")
+                st.success("✨ Marketing intelligence brief generated successfully.")
                 st.markdown(response.text)
             else:
-                st.warning("The live analysis service did not return a complete response. Showing a safe draft brief instead.")
+                st.warning("The workflow did not return a complete response. Showing a safe draft brief instead.")
                 st.markdown(f"""
 ### Selected Topic
 {topic}
 
+### Source
+{source}
+
+### Priority
+{priority}
+
 ### Trend Summary
-This topic may be relevant to current marketing strategy. The selected source, {source}, should be reviewed to confirm the original context before using the insight.
+This topic may be relevant to current marketing strategy. The selected source should be reviewed to confirm the original context before using the insight.
 
 ### Why It Matters
 For technology consultants, this information can help connect marketing trends to client needs, especially when clients are trying to improve digital visibility, content planning, or customer engagement.
@@ -269,14 +275,13 @@ For technology consultants, this information can help connect marketing trends t
 Use this insight as a starting point for client discussion. Review the original article, identify whether the trend applies to the client’s industry, and decide whether it should influence marketing or technology strategy.
 """)
 
-        except requests.exceptions.RequestException as e:
-            st.error("The live analysis service is temporarily unavailable.")
-            st.write("Error details:", str(e))
+        except requests.exceptions.RequestException:
+            st.error("The live analysis service is temporarily unavailable. Please try again later.")
 
 else:
     st.info("Enter a topic, select a source, and click the button to generate a human-readable marketing intelligence brief.")
 
 st.markdown(
-    '<div class="footer">Built as a Streamlit interface for Assignment 5A — connected to an n8n webhook workflow for live marketing intelligence.</div>',
+    '<div class="footer">Built as a Streamlit interface for Assignment 5A — designed to make marketing intelligence usable for real people.</div>',
     unsafe_allow_html=True
 )
